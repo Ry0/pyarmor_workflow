@@ -37,7 +37,9 @@ jobs:
         pip install pyarmor
         pyarmor obfuscate sample_code.py
         cp requirements.txt dist
-        zip pyarmor_workflow.zip dist
+        cp README.md dist
+        mv dist pyarmor_workflow
+        zip -r pyarmor_workflow.zip pyarmor_workflow
     - uses: actions/create-release@master
       id: create_release # ファイルアップロードに outputs の値を使用するため ID が必要
       env:
