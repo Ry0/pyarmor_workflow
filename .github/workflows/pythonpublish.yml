@@ -20,7 +20,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip install -r requirements.txt
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -38,8 +38,9 @@ jobs:
         pyarmor obfuscate sample_code.py
         cp requirements.txt dist
         cp README.md dist
-        mv dist pyarmor_workflow
-        zip -r pyarmor_workflow.zip pyarmor_workflow
+        Rename-Item dist pyarmor_workflow
+        Compress-Archive -Path pyarmor_workflow -DestinationPath pyarmor_workflow.zip
+
     - uses: actions/create-release@master
       id: create_release # ファイルアップロードに outputs の値を使用するため ID が必要
       env:
