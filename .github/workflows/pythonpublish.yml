@@ -7,45 +7,45 @@ on:
         - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   
 jobs:
-    release:
-        runs-on: ubuntu-latest
+  release:
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-            python-version: 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
     - name: Install dependencies
-        run: |
-            python -m pip install --upgrade pip
-            pip install flake8 pytest
-            if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with flake8
-        run: |
-            # stop the build if there are Python syntax errors or undefined names
-            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-            # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-            flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
-        run: |
-            pytest
+      run: |
+        pytest
 
     # ビルド処理に置き換える
     - name: Create package
-        run: |
-            pip install pyarmor
-            pyarmor obfuscate sample_code.py
-            cp requirements.txt dist
-            zip pyarmor_workflow.zip dist
+      run: |
+        pip install pyarmor
+        pyarmor obfuscate sample_code.py
+        cp requirements.txt dist
+        zip pyarmor_workflow.zip dist
     - uses: actions/create-release@master
-        id: create_release # ファイルアップロードに outputs の値を使用するため ID が必要
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            tag_name: ${{ github.ref }}
-            release_name: タイトル
-            body: |
+      id: create_release # ファイルアップロードに outputs の値を使用するため ID が必要
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: タイトル
+        body: |
                 ### 変更内容
 
                 - 
@@ -68,18 +68,18 @@ jobs:
 
 
                 </details>
-            draft: true
-            prerelease: true
+        draft: true
+        prerelease: true
 
     - uses: actions/upload-release-asset@master
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-            # リリースのアップロード URL (必須)
-            upload_url: ${{ steps.create_release.outputs.upload_url }}
-            # 添付ファイルのパス (必須)
-            asset_path: ./pyarmor_workflow.zip
-            # 添付ファイルの表示名 (必須)
-            asset_name: pyarmor_workflow.zip
-            # 添付ファイルに対応する content-type (必須)
-            asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # リリースのアップロード URL (必須)
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        # 添付ファイルのパス (必須)
+        asset_path: ./pyarmor_workflow.zip
+        # 添付ファイルの表示名 (必須)
+        asset_name: pyarmor_workflow.zip
+        # 添付ファイルに対応する content-type (必須)
+        sset_content_type: application/zip
