@@ -46,28 +46,28 @@ jobs:
         tag_name: ${{ github.ref }}
         release_name: タイトル
         body: |
-                ### 変更内容
+          ### 変更内容
 
-                - 
+          - 
 
-                ### リリース前作業
-                - [ ]
+          ### リリース前作業
+          - [ ]
 
-                <details>
-                    <summary>実作業</summary>
-
-
-
-                </details>
-
-                ### リリース後作業
-                - [ ]
-
-                <details>
-                    <summary>実作業</summary>
+          <details>
+            <summary>実作業</summary>
 
 
-                </details>
+
+          </details>
+
+          ### リリース後作業
+          - [ ]
+
+          <details>
+            <summary>実作業</summary>
+
+
+          </details>
         draft: true
         prerelease: true
 
